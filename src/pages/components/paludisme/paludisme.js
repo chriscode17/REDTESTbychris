@@ -1,7 +1,7 @@
-
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
 import styled from 'styled-components';
 import colors from '../../../utils/style/colors';
+
 const FormContainer = styled.div`
   border-radius: 8px;
   background-color: ${colors.primary || '#f2f2f2'};
@@ -61,6 +61,65 @@ const StyledInput = styled.input`
   }
 `;
 
+/* --- Nouvelle zone de dépôt d'image --- */
+const DropZone = styled.div`
+  width: 80%;
+  border: 2px dashed #c4c4d4;
+  border-radius: 8px;
+  background-color: #f4f4f8;
+  padding: 30px 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  transition: border-color 200ms;
+
+  &:hover {
+    border-color: ${colors.secondary};
+  }
+
+  @media screen and (max-width: 600px) {
+    width: 100%;
+  }
+`;
+
+const HiddenFileInput = styled.input`
+  display: none;
+`;
+
+const ChooseFileButton = styled.button`
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background-color: ${colors.secondary};
+  color: white;
+  font-weight: bold;
+  border: none;
+  border-radius: 6px;
+  padding: 12px 20px;
+  font-size: 15px;
+  cursor: pointer;
+  transition: background-color 200ms;
+
+  &:hover {
+    background-color: ${colors.primaro || colors.secondary};
+  }
+`;
+
+const DropZoneHint = styled.p`
+  margin-top: 12px;
+  font-size: 13px;
+  color: #666;
+`;
+
+const FileName = styled.p`
+  margin-top: 12px;
+  font-size: 14px;
+  font-weight: 500;
+  color: #333;
+`;
+/* --- fin nouvelle zone de dépôt --- */
+
 const SubmitButton = styled.button`
   background-color:${colors.secondary};
   color: black;
@@ -96,6 +155,8 @@ function Paludisme() {
         poids: '',
         imageFile: null
     });
+
+    const fileInputRef = useRef(null);
 
     // Gestion des changements dans les champs texte et nombre
     const handleChange = (e) => {
@@ -225,13 +286,28 @@ function Paludisme() {
             <StyledLabel htmlFor="imageFrottis">Image du frottis </StyledLabel>
           </Col25>
           <Col75>
-            <StyledInput
-              type="file"
-              id="imageFrottis"
-              accept="image/*"
-              onChange={handleImageChange}
-              required
-            />
+            <DropZone onClick={() => fileInputRef.current.click()}>
+              <ChooseFileButton type="button">
+                📄 Choisir des fichiers
+              </ChooseFileButton>
+
+              <HiddenFileInput
+                type="file"
+                id="imageFrottis"
+                accept="image/*"
+                ref={fileInputRef}
+                onChange={handleImageChange}
+                required
+              />
+
+              {formData.imageFile ? (
+                <FileName>Fichier sélectionné : {formData.imageFile.name}</FileName>
+              ) : (
+                <DropZoneHint>
+                  Formats acceptés : JPG, PNG — taille maximale 10 Mo
+                </DropZoneHint>
+              )}
+            </DropZone>
           </Col75>
         </FormRow>
 

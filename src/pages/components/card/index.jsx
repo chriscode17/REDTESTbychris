@@ -2,53 +2,66 @@ import PropTypes from 'prop-types'
 import styled from 'styled-components'
 import colors from '../../../utils/style/colors';
 
-
-
+const OuterWrapper = styled.div`
+    display: flex;
+    flex-direction: column;
+    padding: 15px;
+    width: 100%;
+    max-width: 750px;
+    box-sizing: border-box;
+`
 
 const CardWrapper = styled.div`
     display: flex;
     flex-direction: column;
     padding: 10px;
-    margin-top:20%;
+    margin-top: clamp(10px, 5vw, 40px);
     background-color: ${colors.secondary};
     border-radius: 30px;
-    width: 350px;
+    width: 100%;
+    max-width: 350px;
+    box-sizing: border-box;
     transition: 200ms;
+
     &:hover {
         cursor: pointer;
         box-shadow: 7px 7px 15px #e2e3e9;
     }
+
+    @media (max-width: 480px) {
+        max-width: 100%;
+        border-radius: 20px;
+        padding: 15px;
+    }
 `
 
-function Card({ label, title, picture,temperature, poids }) {
-    const CardLabel = styled.span`
-     color:${colors.five} ;
-    font-size: 22px;
-    font-weight: bold `
+const CardLabel = styled.span`
+    color: ${colors.five};
+    font-size: clamp(16px, 4vw, 22px);
+    font-weight: bold;
+`
 
-    const CardImage = styled.img`
-    height: 80px;
-    width: 80px;
+const CardImage = styled.img`
+    height: clamp(60px, 15vw, 80px);
+    width: clamp(60px, 15vw, 80px);
     border-radius: 50%;
+    object-fit: cover;
 `
+
+function Card({ label, title, picture, temperature, poids }) {
     return (
-        <div style={{ display: 'flex', flexDirection: 'column', padding: 15 , width:750}}>
+        <OuterWrapper>
             <CardWrapper>
-            <CardLabel>{label}</CardLabel>
-            <CardImage src={picture} alt="malade" height={80} width={80} />
-            <span>{title}</span>
-            <span>Température: {temperature}°C</span>
-            <span>Poids: {poids}</span>
+                <CardLabel>{label}</CardLabel>
+                <CardImage src={picture} alt="malade" />
+                <span>{title}</span>
+                <span>Température: {temperature}°C</span>
+                <span>Poids: {poids}</span>
             </CardWrapper>
-        </div>
+        </OuterWrapper>
     )
 }
- 
 
-
-
-
- 
 Card.propTypes = {
     label: PropTypes.string.isRequired,
     title: PropTypes.string,
@@ -56,4 +69,5 @@ Card.propTypes = {
     temperature: PropTypes.number,
     poids: PropTypes.string,
 }
+
 export default Card
