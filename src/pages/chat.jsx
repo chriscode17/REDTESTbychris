@@ -321,7 +321,7 @@ const SUGGESTIONS = [
   "Que faire en cas de suspicion d'anémie ?",
 ];
 
-const API_URL = 'http://localhost:8000/api/chat';
+const API_URL = 'http://127.0.0.1:8000/api/chat';
 
 // --- Composant ---
 export default function Chat() {
